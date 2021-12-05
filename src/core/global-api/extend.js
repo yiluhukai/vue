@@ -14,10 +14,11 @@ export function initExtend (Vue: GlobalAPI) {
   let cid = 1
 
   /**
-   * Class inheritance
+   * Class inheritance 返回了一个VueComponent()函数
    */
   Vue.extend = function (extendOptions: Object): Function {
     extendOptions = extendOptions || {}
+    // Super === Vue
     const Super = this
     const SuperId = Super.cid
     const cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {})
@@ -29,13 +30,15 @@ export function initExtend (Vue: GlobalAPI) {
     if (process.env.NODE_ENV !== 'production' && name) {
       validateComponentName(name)
     }
-
+    // 
     const Sub = function VueComponent (options) {
       this._init(options)
     }
+    // 将Sub.prototype的原型指向以Super.prototype为原型的对象
     Sub.prototype = Object.create(Super.prototype)
     Sub.prototype.constructor = Sub
     Sub.cid = cid++
+    // 合并我们传入的选项
     Sub.options = mergeOptions(
       Super.options,
       extendOptions
@@ -76,6 +79,7 @@ export function initExtend (Vue: GlobalAPI) {
 
     // cache constructor
     cachedCtors[SuperId] = Sub
+    // 返回VueComponent的构造函数
     return Sub
   }
 }

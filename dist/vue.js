@@ -11403,15 +11403,18 @@
     var el = query(id);
     return el && el.innerHTML
   });
-
+  // new Vue(option).$mount(el)
+  // 重写mount函数
   var mount = Vue.prototype.$mount;
   Vue.prototype.$mount = function (
     el,
+    // 服务渲染需要用到的参数
     hydrating
   ) {
+    // 当el === string是将el转成dom对象
     el = el && query(el);
-
     /* istanbul ignore if */
+    // 元素不能挂载body和html元素上
     if (el === document.body || el === document.documentElement) {
       warn(
         "Do not mount Vue to <html> or <body> - mount to normal elements instead."
@@ -11421,6 +11424,7 @@
 
     var options = this.$options;
     // resolve template/el and convert to render function
+    // 没有render函数的时候，将template/el 转换成render函数
     if (!options.render) {
       var template = options.template;
       if (template) {
@@ -11471,6 +11475,7 @@
         }
       }
     }
+    // 调用最开始的$mount 函数：const mount = Vue.prototype.$mount
     return mount.call(this, el, hydrating)
   };
 

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <!-- 这个是带有编译器版本的 -->
+    <!-- <script src="../../dist/vue.js"></script> -->
+    <!-- 没有编译器版本的,会报错 -->
+    <script src="../../dist/vue.runtime.js">
+
+    </script>
+    <script>
+        const vm = new Vue({
+            el:"#app",
+            template:`<h1> hello vue.js!</h1>`
+        })
+    </script>
+</body>
+</html>

@@ -25,15 +25,19 @@ const weexFactoryPlugin = {
 }
 
 const aliases = require('./alias')
+ // resolve函数经我们传入的path解析成绝对路径
 const resolve = p => {
+  // p = "web/entry-runtime-with-compiler.js" => base = "web"
   const base = p.split('/')[0]
+  // aliases[base] => "/src/platforms/web"
   if (aliases[base]) {
+    //  "/src/platforms/web" + '/entry-runtime-with-compiler.js
     return path.resolve(aliases[base], p.slice(base.length + 1))
   } else {
     return path.resolve(__dirname, '../', p)
   }
 }
-
+// 不同环境的打包配置的基础信息
 const builds = {
   // Runtime only (CommonJS). Used by bundlers e.g. Webpack & Browserify
   'web-runtime-cjs-dev': {
@@ -121,6 +125,7 @@ const builds = {
   },
   // Runtime+compiler development build (Browser)
   'web-full-dev': {
+    // resolve函数经我们传入的path解析成绝对路径
     entry: resolve('web/entry-runtime-with-compiler.js'),
     dest: resolve('dist/vue.js'),
     format: 'umd',
@@ -257,7 +262,9 @@ function genConfig (name) {
 
   return config
 }
-
+// TARGET是我们打包时在package.json中设置的环境变量
+// --environment TARGET:web-full-dev，当TARGET存在是，
+// 使用genConfig函数去获取对应环境的配置信息
 if (process.env.TARGET) {
   module.exports = genConfig(process.env.TARGET)
 } else {
